@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2012 Olavi Lehtola.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the GNU Public License v2.0
+  which accompanies this distribution, and is available at
+  http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+  
+  Contributors:
+      Olavi Lehtola - initial API and implementation
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"> 
+     <stroke android:width="4dp" android:color="#fff" /> 
+     <padding android:left="7dp" android:top="7dp" 
+             android:right="7dp" android:bottom="7dp" /> 
+     <corners android:radius="4dp" /> 
+     <gradient
+        android:angle="90"
+        android:startColor="#000"
+        android:endColor="#000"
+        android:type="linear"/>
+ </shape>

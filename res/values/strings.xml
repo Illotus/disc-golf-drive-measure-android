@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2012 Olavi Lehtola.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the GNU Public License v2.0
+  which accompanies this distribution, and is available at
+  http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+  
+  Contributors:
+      Olavi Lehtola - initial API and implementation
+-->
+<resources>
+    <string name="app_name">Disc Golf Drive Meter beta</string>
+    <string name="start_throwing">Mark Throwing Spot</string>
+    <string name="mark_distance">Measure Distance</string>
+    <string name="zero_distance">N/A</string>
+    <string name="current_distance">Current Distance</string>
+    <string name="mark_new_starting_spot">Mark New Throwing Spot</string>
+    <string name="show_current_session_throws">Show Sessions\'s Throws</string>
+    <string name="share">Share results</string>
+	<string name="last_measured_distance">Last Measured Distance</string>
+
+</resources>

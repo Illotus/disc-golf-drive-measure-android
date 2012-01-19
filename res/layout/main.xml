@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2012 Olavi Lehtola.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the GNU Public License v2.0
+  which accompanies this distribution, and is available at
+  http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+  
+  Contributors:
+      Olavi Lehtola - initial API and implementation
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+    <Button
+        android:layout_marginTop="10dip"
+        android:id="@+id/start_throwing"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_throwing"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<LinearLayout android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:background="@drawable/my_border"
+    	android:layout_marginLeft="10dip"
+    	android:layout_marginRight="10dip"
+    	android:layout_marginBottom="10dip" >
+		<TextView
+	        android:id="@+id/current_distance_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/current_distance"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	    <TextView
+	        android:id="@+id/current_distance"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/zero_distance"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	    <TextView
+	        android:id="@+id/last_saved_distance_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/last_measured_distance"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	    <TextView
+	        android:id="@+id/last_saved_distance"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/zero_distance"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+		    
+	</LinearLayout>
+	
+	<Button
+        android:id="@+id/show_current_session_throws"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_current_session_throws" 
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+		<LinearLayout android:layout_width="fill_parent"
+    	android:layout_height="0dp"
+    	android:orientation="vertical"
+    	android:layout_weight="1"
+		>		    
+		</LinearLayout>
+
+	
+	<Button
+        android:id="@+id/mark_distance"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mark_distance"
+        android:layout_gravity="bottom"
+        android:textAppearance="?android:attr/textAppearanceMedium" 
+        />
+   </LinearLayout>
