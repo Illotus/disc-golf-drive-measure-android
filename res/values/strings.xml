@@ -10,7 +10,7 @@
       Olavi Lehtola - initial API and implementation
 -->
 <resources>
-    <string name="app_name">Disc Golf Drive Meter beta</string>
+    <string name="app_name">Disc Golf Drive Measure beta</string>
     <string name="start_throwing">Mark Throwing Spot</string>
     <string name="mark_distance">Measure Distance</string>
     <string name="zero_distance">N/A</string>
