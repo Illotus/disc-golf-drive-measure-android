@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="50dip"
+    android:gravity="center_vertical"
+    android:background="#0000FF"
+    android:layout_weight="0">
+   	<TextView
+	android:id="@+id/last_saved_distance"
+	android:text="@string/app_name"
+	android:textColor="#fff"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:gravity="center_vertical"
+	android:textAppearance="?android:attr/textAppearanceLarge" />
+ 
+</LinearLayout>
