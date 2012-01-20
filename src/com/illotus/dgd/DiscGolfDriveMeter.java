@@ -11,6 +11,7 @@
 package com.illotus.dgd;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 public class DiscGolfDriveMeter extends Application {
 	private DriveManager throwManager;
@@ -31,21 +32,16 @@ public class DiscGolfDriveMeter extends Application {
 		this.throwManager = throwManager;
 	}
 
-	public String getUnit() {
-		return "m";
-	
-	}
-	
 	public void gpsOn() {
-	    this.gpsShouldBeOn = true;
+		this.gpsShouldBeOn = true;
 	}
+
 	public void gpsOff() {
-        this.gpsShouldBeOn = false;
-    }
-	
-	public Boolean shouldGPSBeOn() {
-	    return this.gpsShouldBeOn;
+		this.gpsShouldBeOn = false;
 	}
-	
+
+	public Boolean shouldGPSBeOn() {
+		return this.gpsShouldBeOn;
+	}
 
 }

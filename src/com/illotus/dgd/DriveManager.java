@@ -17,16 +17,16 @@ import java.util.ArrayList;
  */
 public class DriveManager {
 	private ArrayList<Drive> discGolfThrows;
-	
+
 	public DriveManager() {
 		discGolfThrows = new ArrayList<Drive>();
 	}
-	
+
 	public void addDiscGolfThrow(Drive d) {
 		discGolfThrows.add(d);
-		
+
 	}
-	
+
 	public ArrayList<Drive> getDiscGolfThrows() {
 		return discGolfThrows;
 	}

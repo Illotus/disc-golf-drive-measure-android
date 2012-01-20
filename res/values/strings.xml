@@ -19,5 +19,6 @@
     <string name="show_current_session_throws">Show Sessions\'s Throws</string>
     <string name="share">Share results</string>
 	<string name="last_measured_distance">Last Measured Distance</string>
+	<string name="choose_unit">Choose unit of measure</string>
 
 </resources>

@@ -13,16 +13,22 @@ package com.illotus.dgd;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
 public class DriveList extends ListActivity {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return super.onCreateOptionsMenu(menu);
+	}
+
 	private DriveManager throwManager;
-	private ArrayAdapter<Drive> listAdapter;
+	private DriveArrayAdapter listAdapter;
 	private Button shareThrows;
+	private Unit distanceUnit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +36,12 @@ public class DriveList extends ListActivity {
 		setContentView(R.layout.throw_list);
 		throwManager = ((DiscGolfDriveMeter) getApplicationContext())
 				.getThrowManager();
-		listAdapter = new ArrayAdapter<Drive>(this,
-				android.R.layout.simple_list_item_1, throwManager.getDiscGolfThrows());
-		setListAdapter(listAdapter);
 		setUpShareButton();
+		AppPreferences preferences = new AppPreferences(this);
+		distanceUnit = preferences.getDistanceUnit();
+		listAdapter = new DriveArrayAdapter(this,
+				throwManager.getDiscGolfThrows(), distanceUnit);
+		setListAdapter(listAdapter);
 
 	}
 
@@ -61,13 +69,16 @@ public class DriveList extends ListActivity {
 	public String createShareMessage() {
 		StringBuffer sb = new StringBuffer();
 		for (Drive d : this.throwManager.getDiscGolfThrows()) {
-			sb.append(d.getDistanceRoundedToTwoDecimals() + " " + ((DiscGolfDriveMeter) getApplicationContext()).getUnit() + "\n");
+			sb.append(d.getDistanceRoundedToTwoDecimals(distanceUnit) + " "
+					+ distanceUnit.getAbbreviation() + "\n");
 		}
 		this.throwManager.getDiscGolfThrows();
 
 		return sb.toString();
 	}
-	
-	
+
+	public String getDistanceUnitAbbreviation() {
+		return this.distanceUnit.getAbbreviation();
+	}
 
 }
