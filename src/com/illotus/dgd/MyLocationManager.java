@@ -20,22 +20,29 @@ public class MyLocationManager extends Observable {
 	private Boolean currentLocationIsStartingLocation;
 	private Drive currentDistance;
 
-	public Boolean currentLocationIsStartingLocation() {
-		return currentLocationIsStartingLocation;
-	}
-
 	public MyLocationManager() {
 		startLocation = null;
 		currentLocation = null;
 		currentDistance = null;
 		currentLocationIsStartingLocation = true;
+		currentDistance = new Drive(0);
+	}
+
+	public Boolean currentLocationIsStartingLocation() {
+		return currentLocationIsStartingLocation;
+	}
+	
+	public void refresh() {
+		setChanged();
+		notifyObservers();
+		
 	}
 
 	public void updateLocation(Location location) {
 		if (startLocation == null) {
 			startLocation = location;
 			currentLocation = location;
-			currentDistance = new Drive(0.0);
+			currentDistance = new Drive(0);
 		} else {
 			currentLocation = location;
 			currentDistance.update(startLocation, currentLocation);
@@ -48,7 +55,7 @@ public class MyLocationManager extends Observable {
 	public void resetStartLocationToCurrent() {
 		startLocation = currentLocation;
 		currentLocationIsStartingLocation = true;
-		currentDistance = new Drive(0.0);
+		currentDistance = new Drive(0);
 		setChanged();
 		notifyObservers();
 	}

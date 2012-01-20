@@ -47,7 +47,6 @@ public class GPSLocationManager extends Observable implements LocationListener {
 	}
 
 	public void onProviderDisabled(String arg0) {
-		System.out.println("1");
 		setChanged();
 		this.notifyObservers();
 	}
@@ -59,7 +58,6 @@ public class GPSLocationManager extends Observable implements LocationListener {
 			locationManager.requestLocationUpdates(
 					LocationManager.GPS_PROVIDER, 1000, 1, this);
 		} else {
-			System.out.println("1");
 			setChanged();
 			this.notifyObservers();
 		}

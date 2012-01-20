@@ -109,6 +109,7 @@ public class Main extends Activity implements Observer {
 						.getCurrentDistance().getDistanceRoundedToTwoDecimals(
 								distanceUnit)
 						+ " " + distanceUnit.getAbbreviation());
+				
 				throwManager.addDiscGolfThrow(new Drive(myLocationManager
 						.getCurrentDistance()));
 			}
@@ -285,16 +286,13 @@ public class Main extends Activity implements Observer {
 				});
 		chooseDistanceUnit = builder.create();
 	}
+	
+	
 
 	protected void refreshUnitContainingTextViews() {
-		lastSavedDistance.setText(myLocationManager.getCurrentDistance()
-				.getDistanceRoundedToTwoDecimals(distanceUnit)
-				+ " "
-				+ distanceUnit.getAbbreviation());
-		currentMeasuredDistance.setText(myLocationManager.getCurrentDistance()
-				.getDistanceRoundedToTwoDecimals(distanceUnit)
-				+ " "
-				+ distanceUnit.getAbbreviation());
+		if (!currentMeasuredDistance.getText().equals("N/A")) {
+			this.myLocationManager.refresh();
+		}
 	}
 
 }
