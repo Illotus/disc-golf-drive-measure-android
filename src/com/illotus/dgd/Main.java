@@ -43,6 +43,7 @@ public class Main extends Activity implements Observer {
 	private Unit distanceUnit;
 	private AppPreferences preferences;
 	private AlertDialog chooseDistanceUnit;
+	private Boolean gpsShouldBeOn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -55,12 +56,12 @@ public class Main extends Activity implements Observer {
 		myLocationManager.addObserver(this);
 		gpsLocationManager = new GPSLocationManager(this, myLocationManager);
 		gpsLocationManager.addObserver(this);
-		throwManager = ((DiscGolfDriveMeter) getApplicationContext())
-				.getThrowManager();
+		throwManager = ((App) getApplicationContext()).getThrowManager();
 		waitForGPSFix = null;
 		preferences = new AppPreferences(this);
 		distanceUnit = preferences.getDistanceUnit();
 		instantiateChooseDistanceUnit();
+		gpsShouldBeOn = false;
 
 	}
 
@@ -73,7 +74,7 @@ public class Main extends Activity implements Observer {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (((DiscGolfDriveMeter) this.getApplication()).shouldGPSBeOn()) {
+		if (gpsShouldBeOn) {
 			gpsLocationManager.activateGPS();
 		}
 	}
@@ -134,7 +135,7 @@ public class Main extends Activity implements Observer {
 	private OnClickListener getInitialListener() {
 		return new OnClickListener() {
 			public void onClick(View v) {
-				((DiscGolfDriveMeter) Main.this.getApplication()).gpsOn();
+				Main.this.gpsShouldBeOn = true;
 				createAndShowWaitForGPSFixDialog();
 				gpsLocationManager.activateGPS();
 

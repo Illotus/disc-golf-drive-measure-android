@@ -11,17 +11,14 @@
 package com.illotus.dgd;
 
 import android.app.Application;
-import android.content.SharedPreferences;
 
-public class DiscGolfDriveMeter extends Application {
+public class App extends Application {
 	private DriveManager throwManager;
-	private Boolean gpsShouldBeOn;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		throwManager = new DriveManager();
-		gpsShouldBeOn = false;
 	}
 
 	public DriveManager getThrowManager() {
@@ -30,18 +27,6 @@ public class DiscGolfDriveMeter extends Application {
 
 	public void setThrowManager(DriveManager throwManager) {
 		this.throwManager = throwManager;
-	}
-
-	public void gpsOn() {
-		this.gpsShouldBeOn = true;
-	}
-
-	public void gpsOff() {
-		this.gpsShouldBeOn = false;
-	}
-
-	public Boolean shouldGPSBeOn() {
-		return this.gpsShouldBeOn;
 	}
 
 }
