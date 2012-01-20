@@ -34,7 +34,7 @@ public class DriveList extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.throw_list);
-		throwManager = ((DiscGolfDriveMeter) getApplicationContext())
+		throwManager = ((App) getApplicationContext())
 				.getThrowManager();
 		setUpShareButton();
 		AppPreferences preferences = new AppPreferences(this);
