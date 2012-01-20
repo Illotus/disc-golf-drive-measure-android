@@ -16,15 +16,15 @@ import android.location.Location;
 
 public class Drive {
 	private double distance;
-	
+
 	public Drive(double distance) {
 		this.distance = distance;
 	}
-	
+
 	public Drive(Location start, Location current) {
 		this.distance = start.distanceTo(current);
 	}
-	
+
 	public Drive(Drive d) {
 		this.distance = d.getDistance();
 	}
@@ -33,15 +33,13 @@ public class Drive {
 		this.distance = start.distanceTo(current);
 	}
 
-	public String getDistanceRoundedToTwoDecimals () {
+	public String getDistanceRoundedToTwoDecimals(Unit distanceUnit) {
 		DecimalFormat twoDForm = new DecimalFormat("####.##");
-		return twoDForm.format(distance);
+		return twoDForm.format(distanceUnit.convert(distance));
 	}
-	
+
 	public double getDistance() {
 		return distance;
 	}
-	public String toString() {
-		return this.getDistanceRoundedToTwoDecimals();
-	}
+
 }
