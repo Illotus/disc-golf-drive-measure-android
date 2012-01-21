@@ -1,7 +1,7 @@
 package com.illotus.dgd;
 
 public enum Unit {
-	METER(0, 1.00, "meters", "m"), FOOT(1, 0.33, "feet", "f");
+	METER(0, 1.00, "meters", "m"), FOOT(1, 0.33, "feet", "f"), YARD(2, 1.094, "yards", "y");
 
 	private int index;
 	private double modifier;
@@ -29,10 +29,18 @@ public enum Unit {
 	}
 
 	public static Unit getUnit(int unitNumber) {
-		if (unitNumber == 0) {
+		switch (unitNumber) {
+		case 0:
 			return Unit.METER;
+		case 1:
+			return Unit.FOOT;
+		case 2: 
+			return Unit.YARD;
+		default:
+			return Unit.METER;
+		
 		}
-		return Unit.FOOT;
+		
 	}
 
 	public int getPreferenceID() {
@@ -40,7 +48,7 @@ public enum Unit {
 	}
 
 	public CharSequence[] getUnitNames() {
-		CharSequence[] units = { METER.name, FOOT.name };
+		CharSequence[] units = { METER.name, FOOT.name, YARD.name };
 		return units;
 	}
 
