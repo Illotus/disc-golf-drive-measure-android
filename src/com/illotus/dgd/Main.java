@@ -38,7 +38,6 @@ public class Main extends Activity implements Observer {
 	private ProgressDialog waitForGPSFix;
 	private Unit distanceUnit;
 	private AppPreferences preferences;
-	private AlertDialog chooseDistanceUnit;
 	private Boolean gpsShouldBeOn;
 	
 
@@ -56,7 +55,6 @@ public class Main extends Activity implements Observer {
 		waitForGPSFix = null;
 		preferences = new AppPreferences(this);
 		distanceUnit = preferences.getDistanceUnit();
-		instantiateChooseDistanceUnit();
 		gpsShouldBeOn = false;
 	}
 
@@ -102,7 +100,6 @@ public class Main extends Activity implements Observer {
 	}
 
 
-	
 	private void createAndShowWaitForGPSFixDialog(View startSpotChangerButton) {
 		waitForGPSFix = new ProgressDialog(Main.this);
 		waitForGPSFix.setMessage("Getting your position");
@@ -179,8 +176,6 @@ public class Main extends Activity implements Observer {
 		};
 	}
 
-
-
 	private void updateLocation(Observable observable) {
 		MyLocationManager mlm = (MyLocationManager) observable;
 		if (myLocationManager.currentLocationIsStartingLocation()) {
@@ -200,13 +195,13 @@ public class Main extends Activity implements Observer {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.choose_unit) {
-			chooseDistanceUnit.show();
+			handlingChoosingDistanceUnit();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void instantiateChooseDistanceUnit() {
+	private void handlingChoosingDistanceUnit() {
 		final CharSequence[] items = distanceUnit.getUnitNames();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Pick unit of measure");
@@ -219,7 +214,7 @@ public class Main extends Activity implements Observer {
 						dialog.cancel();
 					}
 				});
-		chooseDistanceUnit = builder.create();
+		builder.create().show();		
 	}
 	
 	
