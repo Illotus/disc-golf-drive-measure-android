@@ -11,14 +11,12 @@ public class AppPreferences {
 	private Editor prefsEditor;
 
 	public AppPreferences(Context context) {
-		this.appSharedPrefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
+		this.appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 		this.prefsEditor = appSharedPrefs.edit();
 	}
 
 	public Unit getDistanceUnit() {
-		return Unit.getUnit(appSharedPrefs.getInt("Unit",
-				UNIT_DEFAULT_PREFERENCE_ID));
+		return Unit.getUnit(appSharedPrefs.getInt("Unit", UNIT_DEFAULT_PREFERENCE_ID));
 	}
 
 	public void saveDistanceUnit(Unit u) {

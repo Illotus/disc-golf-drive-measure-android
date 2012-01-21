@@ -20,16 +20,13 @@ public class DriveArrayAdapter extends ArrayAdapter<Drive> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) this.getContext()
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.list_drive, parent, false);
 		}
-		TextView text = (TextView) convertView
-				.findViewById(R.id.drive_distance);
+		TextView text = (TextView) convertView.findViewById(R.id.drive_distance);
 		Drive drive = getItem(position);
 		if (drive != null) {
-			text.setText(drive.getDistanceRoundedToTwoDecimals(distanceUnit)
-					+ " " + distanceUnit.getAbbreviation());
+			text.setText(drive.getDistanceRoundedToTwoDecimals(distanceUnit) + " " + distanceUnit.getAbbreviation());
 		}
 
 		return convertView;

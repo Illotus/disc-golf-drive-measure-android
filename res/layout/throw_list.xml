@@ -29,5 +29,6 @@
         android:layout_width="fill_parent"
         android:paddingTop="8dip"
         android:paddingBottom="8dip"
+        android:onClick="shareThrows"
         android:text="@string/share" />
 </LinearLayout>
