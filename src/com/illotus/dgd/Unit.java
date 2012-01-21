@@ -1,7 +1,7 @@
 package com.illotus.dgd;
 
 public enum Unit {
-	METER(0, 1.00, "meters", "m"), FOOT(1, 0.33, "feet", "f"), YARD(2, 1.094, "yards", "y");
+	METER(0, 1.00, "meters", "m"), FOOT(1, 0.33, "feet", "f"), YARD(2, 0.9144, "yards", "y");
 
 	private int index;
 	private double modifier;

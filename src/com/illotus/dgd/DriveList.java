@@ -25,60 +25,43 @@ public class DriveList extends ListActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	private DriveManager throwManager;
+	private DriveManager driveManager;
 	private DriveArrayAdapter listAdapter;
-	private Button shareThrows;
 	private Unit distanceUnit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.throw_list);
-		throwManager = ((App) getApplicationContext())
-				.getThrowManager();
-		setUpShareButton();
+		driveManager = ((App) getApplicationContext()).getThrowManager();
 		AppPreferences preferences = new AppPreferences(this);
 		distanceUnit = preferences.getDistanceUnit();
-		listAdapter = new DriveArrayAdapter(this,
-				throwManager.getDiscGolfThrows(), distanceUnit);
+		listAdapter = new DriveArrayAdapter(this, driveManager.getDiscGolfThrows(), distanceUnit);
 		setListAdapter(listAdapter);
 
 	}
-
-	private void setUpShareButton() {
-		shareThrows = (Button) findViewById(R.id.share);
-		shareThrows.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent i = new Intent(Intent.ACTION_SEND);
-				i.setType("text/*");
-				i.putExtra(Intent.EXTRA_SUBJECT, "Subject:");
-				i.putExtra(Intent.EXTRA_TEXT, createShareMessage());
-				try {
-					startActivity(Intent.createChooser(i, "Share results ..."));
-				} catch (android.content.ActivityNotFoundException ex) {
-					Toast.makeText(
-							DriveList.this,
-							"There are no chooser options installed for the text/html "
-									+ " + type.", Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
-
+	
+	public void shareThrows(View shareThrowsButton) {
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType("text/*");
+		i.putExtra(Intent.EXTRA_SUBJECT, "Subject:");
+		i.putExtra(Intent.EXTRA_TEXT, createShareMessage());
+		try {
+			startActivity(Intent.createChooser(i, "Share results ..."));
+		} catch (android.content.ActivityNotFoundException ex) {
+			Toast.makeText(DriveList.this,"There are no chooser options installed for the text/html " + " + type.", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	public String createShareMessage() {
 		StringBuffer sb = new StringBuffer();
-		for (Drive d : this.throwManager.getDiscGolfThrows()) {
-			sb.append(d.getDistanceRoundedToTwoDecimals(distanceUnit) + " "
-					+ distanceUnit.getAbbreviation() + "\n");
+		for (Drive d : driveManager.getDiscGolfThrows()) {
+			sb.append(d.getDistanceRoundedToTwoDecimals(distanceUnit) + " " + distanceUnit.getAbbreviation() + "\n");
 		}
-		this.throwManager.getDiscGolfThrows();
 
 		return sb.toString();
 	}
 
-	public String getDistanceUnitAbbreviation() {
-		return this.distanceUnit.getAbbreviation();
-	}
+
 
 }

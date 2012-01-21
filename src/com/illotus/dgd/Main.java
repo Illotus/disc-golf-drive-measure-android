@@ -25,19 +25,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Main extends Activity implements Observer {
-	private Button startThrowing;
-	private Button markDistance;
-	private Button showThrows;
 	private TextView currentMeasuredDistance;
 	private TextView lastSavedDistance;
 	private MyLocationManager myLocationManager;
 	private GPSLocationManager gpsLocationManager;
-	private TextView currentDistanceLabel;
 	private DriveManager driveManager;
 	private ProgressDialog waitForGPSFix;
 	private Unit distanceUnit;
@@ -50,7 +46,6 @@ public class Main extends Activity implements Observer {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		instantiateButtons();
 		instantiateTextViews();
 		switchMeasuringButtons(false);
 		myLocationManager = new MyLocationManager();
@@ -63,7 +58,6 @@ public class Main extends Activity implements Observer {
 		distanceUnit = preferences.getDistanceUnit();
 		instantiateChooseDistanceUnit();
 		gpsShouldBeOn = false;
-
 	}
 
 	@Override
@@ -85,103 +79,61 @@ public class Main extends Activity implements Observer {
 		lastSavedDistance = (TextView) findViewById(R.id.last_saved_distance);
 	}
 
-	private void instantiateButtons() {
-		instantiateStartThrowing();
-		instantiateMarkDistance();
-		instantiateShowThrows();
+	public void markNewStartingSpot(View startSpotChangerButton) {
+		if (!gpsShouldBeOn) {
+			gpsShouldBeOn = true;
+			createAndShowWaitForGPSFixDialog(startSpotChangerButton);
+			gpsLocationManager.activateGPS();
+			((Button) startSpotChangerButton).setText(R.string.mark_new_throwing_spot);
+		} else {
+			myLocationManager.resetStartLocationToCurrent();
+			Toast.makeText(this, "Throwing spot changed to current location", Toast.LENGTH_LONG).show();
+		}
 	}
 
-	private void instantiateShowThrows() {
-		showThrows = (Button) findViewById(R.id.show_current_session_throws);
-		showThrows.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				Intent throwList = new Intent(Main.this, DriveList.class);
-				startActivity(throwList);
+	public void showDriveList(View showDrivesButton) {
+		Intent throwList = new Intent(Main.this, DriveList.class);
+		startActivity(throwList);		
+	}
+	
+	public void markDistance(View markDistanceButton) {
+		lastSavedDistance.setText(myLocationManager.getCurrentDistance().getDistanceRoundedToTwoDecimals(distanceUnit) + " " + distanceUnit.getAbbreviation());
+		driveManager.addDiscGolfThrow(new Drive(myLocationManager.getCurrentDistance()));
+	}
+
+
+	
+	private void createAndShowWaitForGPSFixDialog(View startSpotChangerButton) {
+		waitForGPSFix = new ProgressDialog(Main.this);
+		waitForGPSFix.setMessage("Getting your position");
+		waitForGPSFix.setOnCancelListener(getCancelListener(startSpotChangerButton));
+		waitForGPSFix.setButton("Cancel", buildSearchGPSCancelListener(startSpotChangerButton));
+		waitForGPSFix.show();
+	}
+	private OnCancelListener getCancelListener(final View startSpotChangerButton) {
+		return new DialogInterface.OnCancelListener() {
+			public void onCancel(DialogInterface dialog) {
+				Main.this.cancelStartThrowing(startSpotChangerButton);
 			}
-		});
-
+		};
 	}
-
-	private void instantiateMarkDistance() {
-		markDistance = (Button) findViewById(R.id.mark_distance);
-		markDistance.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				lastSavedDistance.setText(myLocationManager.getCurrentDistance().getDistanceRoundedToTwoDecimals(distanceUnit)
-						+ " " + distanceUnit.getAbbreviation());
-				
-				driveManager.addDiscGolfThrow(new Drive(myLocationManager
-						.getCurrentDistance()));
-			}
-		});
-	}
-
-	private OnClickListener getResetStartingPositionListener() {
-		return new OnClickListener() {
-			public void onClick(View v) {
-				myLocationManager.resetStartLocationToCurrent();
-
+	protected DialogInterface.OnClickListener buildSearchGPSCancelListener(final View startSpotChangerButton) {
+		return new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Main.this.cancelStartThrowing(startSpotChangerButton);
 			}
 		};
 	}
 
-	private void instantiateStartThrowing() {
-		startThrowing = (Button) findViewById(R.id.start_throwing);
-		currentDistanceLabel = (TextView) findViewById(R.id.current_distance_label);
-		currentDistanceLabel.setVisibility(View.VISIBLE);
-		startThrowing.setOnClickListener(getInitialListener());
-
-	}
-
-	private OnClickListener getInitialListener() {
-		return new OnClickListener() {
-			public void onClick(View v) {
-				Main.this.gpsShouldBeOn = true;
-				createAndShowWaitForGPSFixDialog();
-				gpsLocationManager.activateGPS();
-
-			}
-
-			private void createAndShowWaitForGPSFixDialog() {
-				waitForGPSFix = new ProgressDialog(Main.this);
-				waitForGPSFix.setTitle("Please wait...");
-				waitForGPSFix.setMessage("Getting your position");
-				waitForGPSFix.setOnCancelListener(getCancelListener());
-				waitForGPSFix.setButton("Cancel",
-						buildSearchGPSCancelListener());
-				waitForGPSFix.show();
-			}
-
-			private OnCancelListener getCancelListener() {
-				return new DialogInterface.OnCancelListener() {
-					public void onCancel(DialogInterface dialog) {
-						Main.this.cancelStartThrowing(true);
-						finish();
-					}
-				};
-			}
-
-			protected DialogInterface.OnClickListener buildSearchGPSCancelListener() {
-				DialogInterface.OnClickListener l = new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						waitForGPSFix.dismiss();
-						gpsLocationManager.stopGPS();
-						startThrowing.setEnabled(true);
-					}
-				};
-				return l;
-			}
-		};
-	}
-
-	protected void cancelStartThrowing(boolean b) {
-		currentDistanceLabel.setVisibility(View.GONE);
+	protected void cancelStartThrowing(View startSpotChangerButton) {
 		gpsLocationManager.stopGPS();
-		startThrowing.setEnabled(true);
+		((Button) startSpotChangerButton).setText(R.string.mark_throwing_spot);
+		this.gpsShouldBeOn = false;
 	}
 
 	private void switchMeasuringButtons(Boolean state) {
-		markDistance.setEnabled(state);
-		showThrows.setEnabled(state);
+		findViewById(R.id.mark_distance).setEnabled(state);
+		findViewById(R.id.show_current_session_throws).setEnabled(state);
 	}
 
 	public void update(Observable observable, Object data) {
@@ -204,38 +156,38 @@ public class Main extends Activity implements Observer {
 	private AlertDialog.Builder makeGPSNotAvailableBuilder() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("GPS is not enabled")
-				.setMessage(
-						"Would you like to go to the location settings and enable GPS?")
+				.setMessage("Would you like to go to the location settings and enable GPS?")
 				.setCancelable(true)
-				.setPositiveButton("Yes",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								startActivity(new Intent(
-										Settings.ACTION_SECURITY_SETTINGS));
-							}
-						})
-				.setNegativeButton("No", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-						finish();
-					}
-				});
+				.setPositiveButton("Yes", getOkListener())
+				.setNegativeButton("No", getCancelListener());
 		return builder;
 	}
+	
+	private android.content.DialogInterface.OnClickListener getOkListener() {
+		return new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				startActivity(new Intent(Settings.ACTION_SECURITY_SETTINGS));
+			}
+		};
+	}
+	
+	private android.content.DialogInterface.OnClickListener getCancelListener() {
+		return new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		};
+	}
+
+
 
 	private void updateLocation(Observable observable) {
 		MyLocationManager mlm = (MyLocationManager) observable;
 		if (myLocationManager.currentLocationIsStartingLocation()) {
 			waitForGPSFix.dismiss();
 			switchMeasuringButtons(true);
-			startThrowing.setText(R.string.mark_new_starting_spot);
-			startThrowing
-					.setOnClickListener(getResetStartingPositionListener());
 		}
-		currentMeasuredDistance.setText(mlm.getCurrentDistance()
-				.getDistanceRoundedToTwoDecimals(distanceUnit)
-				+ " "
-				+ distanceUnit.getAbbreviation());
+		currentMeasuredDistance.setText(mlm.getCurrentDistance().getDistanceRoundedToTwoDecimals(distanceUnit) + " "+ distanceUnit.getAbbreviation());
 	}
 
 	@Override
@@ -265,7 +217,6 @@ public class Main extends Activity implements Observer {
 						preferences.saveDistanceUnit(distanceUnit);
 						refreshUnitContainingTextViews();
 						dialog.cancel();
-						
 					}
 				});
 		chooseDistanceUnit = builder.create();
