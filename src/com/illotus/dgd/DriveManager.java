@@ -31,4 +31,8 @@ public class DriveManager {
 		return discGolfThrows;
 	}
 
+	public String getLastDistance(Unit distanceUnit) {
+		return this.discGolfThrows.get(discGolfThrows.size()-1).getDistanceRoundedToTwoDecimals(distanceUnit);
+	}
+
 }

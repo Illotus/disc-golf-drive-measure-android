@@ -38,12 +38,13 @@ public class Main extends Activity implements Observer {
 	private MyLocationManager myLocationManager;
 	private GPSLocationManager gpsLocationManager;
 	private TextView currentDistanceLabel;
-	private DriveManager throwManager;
+	private DriveManager driveManager;
 	private ProgressDialog waitForGPSFix;
 	private Unit distanceUnit;
 	private AppPreferences preferences;
 	private AlertDialog chooseDistanceUnit;
 	private Boolean gpsShouldBeOn;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class Main extends Activity implements Observer {
 		myLocationManager.addObserver(this);
 		gpsLocationManager = new GPSLocationManager(this, myLocationManager);
 		gpsLocationManager.addObserver(this);
-		throwManager = ((App) getApplicationContext()).getThrowManager();
+		driveManager = ((App) getApplicationContext()).getThrowManager();
 		waitForGPSFix = null;
 		preferences = new AppPreferences(this);
 		distanceUnit = preferences.getDistanceUnit();
@@ -105,12 +106,10 @@ public class Main extends Activity implements Observer {
 		markDistance = (Button) findViewById(R.id.mark_distance);
 		markDistance.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				lastSavedDistance.setText(myLocationManager
-						.getCurrentDistance().getDistanceRoundedToTwoDecimals(
-								distanceUnit)
+				lastSavedDistance.setText(myLocationManager.getCurrentDistance().getDistanceRoundedToTwoDecimals(distanceUnit)
 						+ " " + distanceUnit.getAbbreviation());
 				
-				throwManager.addDiscGolfThrow(new Drive(myLocationManager
+				driveManager.addDiscGolfThrow(new Drive(myLocationManager
 						.getCurrentDistance()));
 			}
 		});
@@ -273,7 +272,6 @@ public class Main extends Activity implements Observer {
 								.getUnit(Main.this.chooseDistanceUnit
 										.getListView().getCheckedItemPosition());
 						preferences.saveDistanceUnit(distanceUnit);
-						System.out.println(distanceUnit.getName());
 						refreshUnitContainingTextViews();
 					}
 				});
@@ -292,6 +290,10 @@ public class Main extends Activity implements Observer {
 	protected void refreshUnitContainingTextViews() {
 		if (!currentMeasuredDistance.getText().equals("N/A")) {
 			this.myLocationManager.refresh();
+			if (!lastSavedDistance.getText().equals("N/A")) {
+				lastSavedDistance.setText(this.driveManager.getLastDistance(distanceUnit) + " " + distanceUnit.getAbbreviation());
+			}
+						
 		}
 	}
 
