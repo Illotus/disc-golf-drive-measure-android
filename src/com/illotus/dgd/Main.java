@@ -261,25 +261,11 @@ public class Main extends Activity implements Observer {
 		builder.setSingleChoiceItems(items, distanceUnit.getIndex(),
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int item) {
-
-					}
-				});
-		builder.setPositiveButton("Save",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int distanceUnitNumber) {
-						distanceUnit = Unit
-								.getUnit(Main.this.chooseDistanceUnit
-										.getListView().getCheckedItemPosition());
+						distanceUnit = Unit.getUnit(item);
 						preferences.saveDistanceUnit(distanceUnit);
 						refreshUnitContainingTextViews();
-					}
-				});
-		builder.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int distanceUnitNumber) {
 						dialog.cancel();
+						
 					}
 				});
 		chooseDistanceUnit = builder.create();
