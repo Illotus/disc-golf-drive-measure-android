@@ -42,7 +42,6 @@ public class MyLocationManager extends Observable {
 		if (startLocation == null) {
 			startLocation = location;
 			currentLocation = location;
-			currentDistance = new Drive(0);
 		} else {
 			currentLocation = location;
 			currentDistance.update(startLocation, currentLocation);
